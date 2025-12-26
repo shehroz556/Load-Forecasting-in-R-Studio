@@ -103,6 +103,40 @@ After doing that, we will run our ANN model whereby we will use calories, protei
 Test set -2.014818 7.725098 6.737633 -7.414983 18.10099
 Since the most significant error metric for our model is MAPE, we can see that it has a value of 18.10099. This means that the difference between predicted values and actual values of rating, regardless of their sign and magnitude, is 18.10%. 
 
+# Assignment 4
+**Q. How much watts are there in 1 horse-power?**
+Ans. 1 horse-power has 745.7 watts.
+**Q. What is the wattage of the refrigerator at your home? There should be a nameplate at the back. Send a picture of it.**
+Ans. It has wattage of 183. 
+**Q. What is the relationship between Energy & Power?**
+Ans. Energy is the ability to do work such that it is the ability to exert a force that causes the displacement of an object. Power is the rate of doing work such that it is the amount of energy consumed per unit time. The formula to explain the relationship between energy and power is:
+P=dE/dt
+**Q. The unit of Energy commonly used in the field of Energy is kWh. How is kWh equal to J (joules)?**
+Ans. Energy is measured in J (joules). Power is the rate at which energy is consumed. If we are using one joule of energy in one second, we can say that one watt of power is used. A kW is 1000 watts. If we use one kW of power for one hour, we have used 1 kWh of energy. 1 kWh is equivalent to a 1000 joules used for 3600 seconds or 3.6 million joules. Therefore, 1 kWh is equivalent to 3.6 million Joules.
+**Q. How much Energy will your refrigerator consume in 2 hours? How much will it cost?**
+Ans. 
+We know that 1 unit = 1 kWh
+Power = 183 watt = 0.183 kWh
+Time = 2 hours so 0.183 x 2 = 0.366 kW for 2 hours
+This means that we are consuming 0.366 units in 2 hours
+As we are domestic users, considering we are using our refrigerator in peak-timings and considering we are using it in the range of first 100 units whereby the cost per unit is 7.74, the cost of refrigerator use for 2 hours is 7.74 x 0.366 = Rs 2.83284 
+**Q. Explain the merge() function used above?**
+Ans. The merge command used is: 
+House_2 = merge(House_2, All_minutes, by = "Date_Time", all.y = TRUE)
+Firstly, the first and second arguments are two data frames which are being merged into one. The third argument “by = Date_Time” is the column that is used for merging. The fourth argument “all.y = TRUE” means that the output will have extra rows added, one for each row in All_minutes that has no matching row in House_2. These rows will have NAs in those columns that are usually filled with values from House_2. 
+**Q.  Explain this sapply(House_2, class)?**
+Ans. This command is used to determine the data type of each column of the dataset. Since our dataset of House_2 only has 2 columns of date/time and Usage_kW, the command returns the data type of both columns as "POSIXct" "POSIXt" and "numeric" respectively. R explains the sapply function used to return a vector or a matrix. 
+**Q. Explain this: tapply(House_2$Usage_kW,(row(as.matrix(House_2$Usage_kW))-1)%/%60, mean).**
+Ans. tapply() computes a measure (mean, median, min, max, etc..) or a function for each factor variable in a vector. It is a very useful function that lets you create a subset of a vector and then apply some functions to each of the subset. What is happening in this command is that the as.matrix is returning a matrix of all the observations in Usage_kW. The row function is returning a matrix indicating the row number of each observation, in Usage_kW, and subtracting 1 from it. Therefore, we have an index of 0, 1, 2, 3, 4… and so on. For each row number, the %/% indicates that the Usage_kW observation for that row number is divided by 60. This is to convert Usage_kW data from minute-interval to hour_interval data. 
+**Q. The summary of the hourly data shows that the average of Usage_kW is not changed. But the maximum value has decreased from 4.515 kW to 3.45 kW. Why is it so?**
+Ans.  We can see that the maximum value was initially 4.515 kW and now it is 3.45 kW. We can see that the corresponding date/time was initially 2019-05-31 23:59:00 and now it is 2019-05-31 23:00:00. Therefore, the date/time has also changed. Initially, the data had observations of Usage_kW per minute. Now, the data has observations of Usage_kW per hour. The observations for kW/h were derived by the tapply() function as all observations for the sixty minutes were summed up and divided by 60, and hence the ‘mean’. Let us call the new observations of Usage_kW as means. The average of these means will be the same as the original observations. To make matter simpler, suppose we have 4 suppliers of mangoes. The first supplier has 1 mango, the second supplier has 2 mangoes, the third supplier has 3 mangoes, and the fourth supplier has 4 mangoes. Each mango has a specific weight. We can see that the average value of all of these mangoes would be (0.3 + 0.2 + 0.3 + 0.25 + 0.35 + 0.3 + 0.2 + 0.25 + 0.27 + 0.4)/10 = 0.282 kg
+The maximum value would be 0.4 kg for Mango 4 by Supplier 4. 
+However, if we change the weight per mango to mean weight per supplier, the values are indicated in red in the table, the average of these mean values come out to be (0.3 + 0.25 + 0.3 + 0.28)/4 = 0.2825 kg
+This is the same as the original average. Hence, the mean value is the same. 
+As for the max value, it will be 0.3kg now because now our observations are mean weight per supplier. 
+This is what happened with our dataset of House_2 whereby the mean value remained the same but the max value changed. Particularly, the max value changed because we are observing our data by kWh now, and therefore, the hour with the highest mean value will be chosen as the max value. 
+
+
 
 
 
