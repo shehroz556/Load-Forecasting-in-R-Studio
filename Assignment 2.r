@@ -1,4 +1,6 @@
-#setwd("C:/Users/Shehroz Jawad Khan/Desktop/LEI Internship/Task3")
+/analysis.R
+/notebooks/modeling.Rmd
+/project.Rproj
 
 library(psych) 
 
@@ -75,4 +77,5 @@ ANN_model = neuralnet(mpg~horsepower+weight+acceleration, data =
 test$mpg_predicted = predict(ANN_model, test)
 
 accuracy(test$mpg, test$mpg_predicted) 
+
 
