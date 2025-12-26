@@ -1,5 +1,5 @@
 library(readr)
-Houses <- read_csv("C:/Users/Shehroz Jawad Khan/Desktop/LEI Internship/Task6/Houses.csv")
+Houses <- read_csv("pathway")
 
 Houses$Date_Time = as.POSIXct(Houses$Date_Time)
 
@@ -40,6 +40,7 @@ ggplotly(ggplot(House_15)+geom_boxplot(aes(x = Month, y = House15))+labs(x="Hous
 House_4 = Houses[,c(1,9)]
 House_4$hour = as.POSIXlt(House_4$Date_Time)$hour
 ggplotly(ggplot(House_4)+geom_boxplot(aes(x = hour, y = House4))+labs(x="Houses", y = "Usage [kW]")+theme(axis.text.x = element_text(angle = 45))+scale_x_continuous(limits= c(0,23), breaks=c(0:23)))
+
 
 
 
