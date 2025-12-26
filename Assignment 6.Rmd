@@ -1,0 +1,189 @@
+---
+title: 'Exploratory Period Tutorial #7'
+runtime: shiny
+output:
+  html_notebook: default
+  html_document:
+    df_print: paged
+date: "`r Sys.Date()`"
+urlcolor: blue
+---
+
+```{r include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+
+library(plotly)
+library(reshape)
+library(GGally)
+library(shinycssloaders)
+library(shiny)
+library(ggplot2)
+library(forecast)
+library(e1071)
+library(neuralnet)
+```
+
+Knowledge can be defined as "knowing what to do." A data scientist converts information, extracted by a data analyst, into knowledge, by using data modeling tools such as mathematical modeling and machine learning. We have discussed three machine learning techniques in this exploratory period: Linear Regression, SVR, and ANN. It is now time to apply the complete data modeling process to PRECON data on selected houses for STLF.
+
+
+
+```{r}
+
+Houses <- read.csv("Houses.csv")
+
+Houses$Date_Time = as.POSIXct(Houses$Date_Time)
+
+```
+
+ However, you are required to apply the same methods to all.
+
+
+<br>
+
+After isolating the **House26** hourly data, we should investigate the Auto-correlation function (ACF) as we are trying to use Autocorrelation to forecast the load. [Here](https://online.stat.psu.edu/stat462/node/188/) is a good article on this Autocorrelation.
+
+```{r}
+
+Houses$X <- NULL
+
+House26 <- Houses[,c(1,7)]
+colnames(House26) = c("Time", "hourly_load")
+
+
+```
+
+Our data is highly seasonal, and the [seasonaliity](https://en.wikipedia.org/wiki/Seasonality) spans a day. See the ACF plot below. The hourly load is highly correlated with the historical data, especially the previous hour, day, and week.
+
+```{r}
+
+renderPlot({
+  
+  plot(acf(Houses$House26, lag.max = 170), main = "ACF of House 26")
+  })
+
+
+```
+
+
+Let's create a column of hourly, daily, and weekly lags for further investigation.
+
+
+
+```{r}
+
+## This code creates extra rows for 1st June, 2019, the day we want to forecast for.
+
+House26 <- rbind(House26,data.frame(Time = rep(NA, 24),
+                                   hourly_load =rep(NA,24)))
+
+House26$Time <- seq.POSIXt(from = as.POSIXct("2018-06-01 00:00:00 PKT"),
+                                  to = as.POSIXct("2019-06-01 23:00:00 PKT"), by = "hour")
+
+
+
+
+```
+
+
+
+The plot below is not very useful. As we can not see whether the lags we added have any "prediction power" over the hourly load or not. Anyhow the plot is interactive; you can click and drag the cursor to zoom into the plot.
+
+```{r message=FALSE}
+
+House26$Hour_lag = c(rep(NA,1),House26$hourly_load[1:(nrow(House26)-1)])
+
+House26$Daily_lag = c(rep(NA,24),House26$hourly_load[1:(nrow(House26)-24)])
+
+House26$Week_lag = c(rep(NA,168),House26$hourly_load[1:(nrow(House26)-168)])
+
+
+
+house26_plot =  melt(House26[,-1])
+
+house26_plot$Time = House26$Time
+
+renderPlotly({
+ggplot(house26_plot, aes(x = Time))+
+  geom_line(aes(y = value, color = variable))
+})
+
+
+
+```
+
+A more useful set of plots are shown below. There is a high correlation between *hourly_load* and the rest of the independent variables. *Hour_lag* has the highest correlation of 0.853 with the *hourly_load*. But this also shows a problem, [Multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity). :(
+
+
+```{r}
+
+renderPlotly({
+
+ggpairs(House26[,-1])
+
+})
+
+
+
+
+```
+
+So we will have to use only one of the independent variables, as they have a high correlation among themselves, so using all will be redundant. We should use *Hour_lag* then as it has the highest correlation with *hourly_load*, but there is another problem. See the table below; we do not have *Hour_lag* values for the day we want to forecast load for. If we have to use *Hour_lag*, we will need to forecast for each hour separately and then use that result in forecasting the next hour. This chain forecasting increases the error in our final hour forecast results. So we should not use *Hour_lag*. So the next in line is *Daily_lag*, which is the most feasible to be used for STLF in our case.
+
+```{r}
+
+
+
+renderTable({
+  
+  House26_table = House26[(nrow(House26)-23): nrow(House26),]
+  
+  House26_table$Time <- strftime(House26_table$Time, format="%Y-%m-%d %H:%M:%S")
+  
+  House26_table
+  
+})
+
+
+```
+
+
+
+*Create Linear Regression, SVR and ANN models using Daily_lag as the independent variable for each of the 10 Houses.*
+
+
+*Create Linear Regression, SVR and ANN models using Weekly_lag as the independent variable for each of the 10 Houses.*
+
+*Forecast 1st June 2019 load using both sets of models for each household. Send me the results in a single CSV file.*
+
+*Create a complete report showing all your work.*
+
+
+
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
