@@ -1,5 +1,5 @@
 library(readr)
-cereal <- read_csv("C:/Users/Shehroz Jawad Khan/Desktop/LEI Internship/Task4/cereal.csv")
+cereal <- read_csv("pathway")
 str(cereal)
 summary(cereal)
 library(psych)
@@ -22,3 +22,4 @@ test_cereal_scaled$rating_Actual =(test_cereal_scaled $rating * (max(cereal$rati
 plot(test_cereal_scaled$rating_Predicted, test_cereal_scaled$rating_Actual, xlab ="Predicted rating",ylab ="Actual rating") 
 library(forecast)
 accuracy(test_cereal_scaled$rating_Actual, test_cereal_scaled$rating_Predicted) 
+
