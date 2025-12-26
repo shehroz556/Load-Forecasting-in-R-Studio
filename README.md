@@ -81,5 +81,28 @@ Using sigmoid kernel, the errors we get are:
 Test set -20.84243 61.72145 43.80361 73.69199 137.2436
 Therefore, we can see that the errors are minimized if we use the radial kernel. Hence, the radial kernel is most suitable for our model. 
 
+# Assignment 3
+**Q. 
+Create a new ANN model, with three hidden layers, there should be three neurons in the first and the third layer and 8 in the second layer. The model would take some time to train. Be patient! Compare your model to mine. Which one is better?**
+Ans. 
+If we input this neuron strategy and change the relevant parameter, the algorithm does not converge. We are faced with this error:
+Warning message:
+Algorithm did not converge in 1 of 1 repetition(s) within the stepmax.
+In order to rectify this error, we will introduce a small change in our parameters. Firstly, we will try changing the training dataset by opting for 80% of the original data rather than 70%, as was in the original model. Using this sample size, we are able to run the ANN model and derive these errors:
+ME     RMSE      MAE        MPE     MAPE
+Test set 0.06308287 6.532173 5.063186 0.01199533 1.107108
+The errors in the original model were:
+ME RMSE MAE MPE MAPE 
+Test set -0.05357375 6.748359 5.159662 0.01254363 1.127849
+We can see that we have significantly reduced the MAPE with our new neuron strategy. Hence, the latter model is better as compared to the previous model. The problem is that we are not keeping the sample size constant which might have contributed to more favorable results. Additionally,  we can also see that the model is predicting unseen data quite nicely. The predictors had a high correlation with EP, which meant a strong linear relationship.
+**Q2. 
+In tutorial 2, you used linear regression to predict the cereal rating. Create an ANN model using multiple variables to predict the rating for the same data. Write a complete report comparing the two models?**
+Ans. Firstly, we will look at the correlation of the variables with each other to determine which explanatory variables we should use to predict serial rating using ANN model. We can see that calories and fat have a mildly strong negative relationship with cereal rating, but also they have a correlation with each other of 0.50. Therefore, we will only choose one of them. For the purpose of our model, we will choose fat. Secondly, we will use protein as our explanatory variable since it does have some correlation of 0.47 with cereal rating, but it has no significant correlation with calories. The third variable we will use is vitamins for the same reason mentioned above. Now, we will remove the data with categorical variables so that it does not interfere when we are normalizing it. After normalizing the data, we will divide our dataset into test and train. For the purposes of our model, we will use 80% of the dataset as our sample size. 
+After doing that, we will run our ANN model whereby we will use calories, proteins, and vitamins to predict cereal ratings. The parameters we will initially choose our based off the model mentioned in tutorial 4. We will alter these parameters to minimize errors later. As predicted by a good model, the values lie on y=x line. Now, we have to predict the test data. From the plot we can see that the predictors do not have a high correlation with rating. Also, they do not demonstrate a strong linear relationship. This can be seen below. Finally, we try to find the error statistics of our model. These are shown below.
+    ME     RMSE      MAE       MPE     MAPE
+Test set -2.014818 7.725098 6.737633 -7.414983 18.10099
+Since the most significant error metric for our model is MAPE, we can see that it has a value of 18.10099. This means that the difference between predicted values and actual values of rating, regardless of their sign and magnitude, is 18.10%. 
+
+
 
 
