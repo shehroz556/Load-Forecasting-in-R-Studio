@@ -1,9 +1,7 @@
-![R](https://img.shields.io/badge/Code-R-blue)
 
 ## Built With
 - R (RStudio)
-- tidyverse
-- ggplot2
+![R](https://img.shields.io/badge/Code-R-blue)
   
 # Load-Forecasting-in-R-Studio
 Application of Multiple-Linear Regression, Support-Vector Machine, and Artificial Neural Networks to predict short-term load requirements. 
