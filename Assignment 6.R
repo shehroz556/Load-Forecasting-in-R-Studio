@@ -11,7 +11,7 @@ library(caret)
 library(readr)
 library(lattice)
 
-Houses <- read_csv("C:/Users/Shehroz Jawad Khan/Desktop/LEI Internship/Task7/Houses.csv")
+Houses <- read_csv("pathway")
 
 Houses$Date_Time = as.POSIXct(Houses$Date_Time)
 
@@ -308,4 +308,5 @@ testing_House14 <- House14[8761:8784,]
 svm_model_House14 <- svm(hourly_load~Daily_lag, data = training_House14, type = "eps-regression", kernel = "radial")
 svm_model_House14
 predict(svm_model_House14, testing_House14)
+
 
